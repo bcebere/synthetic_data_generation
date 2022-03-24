@@ -8,9 +8,12 @@
 """
 from setuptools import setup
 
+def find_version() -> str:
+    return "0.1.3"
+
 if __name__ == "__main__":
     try:
-        setup(use_scm_version={"version_scheme": "no-guess-dev"})
+        setup(version=find_version())
     except:  # noqa
         print(
             "\n\nAn error occurred while building the project, "
