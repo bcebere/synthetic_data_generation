@@ -28,9 +28,11 @@ class MarginalSynthesizer(BaseDPSynthesizer):
         self.model_ = {}
         for c in data.columns:
             marginal = dp_marginal_distribution(data[c], local_epsilon)
-            self.model_[c] = dict(zip(marginal.as_dict()['states'][c], marginal.as_dict()['data']))
+            self.model_[c] = dict(
+                zip(marginal.as_dict()["states"][c], marginal.as_dict()["data"])
+            )
             if self.verbose:
-                print('Marginal fitted: {}'.format(c))
+                print("Marginal fitted: {}".format(c))
         return self
 
     def sample(self, n_records=None):
@@ -42,10 +44,15 @@ class MarginalSynthesizer(BaseDPSynthesizer):
         for c in self.columns_:
             column_values = list(self.model_[c].keys())
             column_value_probabilities = list(self.model_[c].values())
-            column_sampled = np.random.choice(column_values, p=column_value_probabilities, size=n_records, replace=True)
+            column_sampled = np.random.choice(
+                column_values,
+                p=column_value_probabilities,
+                size=n_records,
+                replace=True,
+            )
             data_synth[c] = column_sampled
             if self.verbose:
-                print('Column sampled: {}'.format(c))
+                print("Column sampled: {}".format(c))
         data_synth = pd.DataFrame(data_synth)
         data_synth = self._check_output_data(data_synth)
         return data_synth
@@ -65,8 +72,9 @@ class UniformSynthesizer(MarginalSynthesizer):
         self.model_ = {}
         for c in data.columns:
             uniform = uniform_distribution(data[c])
-            self.model_[c] = dict(zip(uniform.as_dict()['states'][c], uniform.as_dict()['data']))
+            self.model_[c] = dict(
+                zip(uniform.as_dict()["states"][c], uniform.as_dict()["data"])
+            )
             if self.verbose:
-                print('Uniform fitted: {}'.format(c))
+                print("Uniform fitted: {}".format(c))
         return self
-

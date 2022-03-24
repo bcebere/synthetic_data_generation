@@ -11,6 +11,7 @@ from scipy.spatial.distance import jensenshannon
 
 from synthesis.synthesizers.utils import astype_categorical
 
+
 class BaseDPSynthesizer(ABC):
     """Abstract base class for all differentially private synthesizers"""
 
@@ -82,18 +83,25 @@ class BaseDPSynthesizer(ABC):
         for i, c in enumerate(original_data.columns):
             # compute value_counts for both original and synthetic - align indexes as certain column
             # values in the original data may not have been sampled in the synthetic data
-            counts_original, counts_synthetic = \
-                original_data[c].value_counts(dropna=False).align(
-                    synthetic_data[c].value_counts(dropna=False), join='outer', axis=0, fill_value=0
+            counts_original, counts_synthetic = (
+                original_data[c]
+                .value_counts(dropna=False)
+                .align(
+                    synthetic_data[c].value_counts(dropna=False),
+                    join="outer",
+                    axis=0,
+                    fill_value=0,
                 )
+            )
 
             js_distance = jensenshannon(counts_original, counts_synthetic)
             column_distances[c] = js_distance
-        average_column_distance = sum(column_distances.values()) / len(original_data.columns)
+        average_column_distance = sum(column_distances.values()) / len(
+            original_data.columns
+        )
         if score_dict:
             return average_column_distance, column_distances
         return average_column_distance
-
 
     def copy(self):
         """Produces a copy of the class.
@@ -113,7 +121,7 @@ class BaseDPSynthesizer(ABC):
         path: str
             Path where the synthesizer instance is saved.
         """
-        with open(path, 'wb') as output:
+        with open(path, "wb") as output:
             dill.dump(self, output)
 
     @classmethod
@@ -129,7 +137,7 @@ class BaseDPSynthesizer(ABC):
         synthesizer : class
             Returns synthesizer instance.
         """
-        with open(path, 'rb') as f:
+        with open(path, "rb") as f:
             return dill.load(f)
 
     def _check_init_args(self):
@@ -160,7 +168,7 @@ class BaseDPSynthesizer(ABC):
         data_synth = data_synth.astype(self.dtypes_fit_)
 
         # convert 'nan' to NaN
-        data_synth = data_synth.replace({'nan': np.nan})
+        data_synth = data_synth.replace({"nan": np.nan})
 
         # convert column order as seen in fit
         data_synth = data_synth[self.columns_]
@@ -179,10 +187,12 @@ class BaseDPSynthesizer(ABC):
         float(self.epsilon)
 
     def _check_is_fitted(self):
-        if not hasattr(self, 'model_'):
-            msg = ("This %(name)s instance is not fitted yet. Call 'fit' with "
-                   "appropriate arguments before using this synthesizer.")
-            raise NotFittedError(msg % {'name': type(self).__name__})
+        if not hasattr(self, "model_"):
+            msg = (
+                "This %(name)s instance is not fitted yet. Call 'fit' with "
+                "appropriate arguments before using this synthesizer."
+            )
+            raise NotFittedError(msg % {"name": type(self).__name__})
 
 
 class NotFittedError(Exception):

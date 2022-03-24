@@ -5,8 +5,8 @@ import pandas as pd
 
 from sklearn.base import BaseEstimator, TransformerMixin
 
-class BaseReversibleTransformer(TransformerMixin, BaseEstimator):
 
+class BaseReversibleTransformer(TransformerMixin, BaseEstimator):
     def __init__(self):
         super().__init__()
 
@@ -28,6 +28,8 @@ class BaseReversibleTransformer(TransformerMixin, BaseEstimator):
     def _check_output_data(self, data_output):
         # convert dtypes back to original - first convert object to bool to prevent all values from becoming True
         bool_cols = self.dtypes_fit_[self.dtypes_fit_ == bool].index
-        data_output[bool_cols] = data_output[bool_cols].replace({'False': False, 'True': True})
+        data_output[bool_cols] = data_output[bool_cols].replace(
+            {"False": False, "True": True}
+        )
         data_output = data_output.astype(self.dtypes_fit_)
         return data_output

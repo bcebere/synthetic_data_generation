@@ -3,12 +3,12 @@ from abc import ABC, abstractmethod
 
 from synthesis.synthesizers.utils import astype_categorical
 
-COLOR_PALETTE = ['#393e46', '#ff5722', '#d72323']
+COLOR_PALETTE = ["#393e46", "#ff5722", "#d72323"]
+
 
 class BaseMetric(ABC):
-
     def __init__(self, labels=None, exclude_columns=None, astype_cat=True):
-        self.labels = labels or ['original', 'synthetic']
+        self.labels = labels or ["original", "synthetic"]
         self.exclude_columns = exclude_columns
         self.astype_cat = astype_cat
 
@@ -28,7 +28,9 @@ class BaseMetric(ABC):
 
         # exclude columns
         if self.exclude_columns:
-            columns = [c for c in data_original.columns if c not in self.exclude_columns]
+            columns = [
+                c for c in data_original.columns if c not in self.exclude_columns
+            ]
             data_original = data_original[columns]
             data_synthetic = data_synthetic[columns]
 
@@ -47,9 +49,18 @@ class BaseMetric(ABC):
 
 
 class BasePredictiveMetric(BaseMetric):
-
-    def __init__(self,  labels=None, exclude_columns=None, astype_cat=True, y_column=None, random_state=None, n_jobs=None):
-        super().__init__(labels=labels, exclude_columns=exclude_columns, astype_cat=astype_cat)
+    def __init__(
+        self,
+        labels=None,
+        exclude_columns=None,
+        astype_cat=True,
+        y_column=None,
+        random_state=None,
+        n_jobs=None,
+    ):
+        super().__init__(
+            labels=labels, exclude_columns=exclude_columns, astype_cat=astype_cat
+        )
         self.y_column = y_column
         self.random_state = random_state
         self.n_jobs = n_jobs

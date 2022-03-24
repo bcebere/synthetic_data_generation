@@ -28,7 +28,9 @@ def plot_kmf_comparison(datasets, dataset_names, T_varname, E_varname, G_varname
         datasets = [datasets]
     if not isinstance(dataset_names, list):
         dataset_names = [dataset_names]
-    assert len(datasets) == len(dataset_names), "input datasets and dataset_names are of different lengths"
+    assert len(datasets) == len(
+        dataset_names
+    ), "input datasets and dataset_names are of different lengths"
 
     figsize = (8 * len(datasets), 7)
     fig, ax = plt.subplots(1, len(datasets), figsize=figsize, sharey=True)
@@ -36,7 +38,7 @@ def plot_kmf_comparison(datasets, dataset_names, T_varname, E_varname, G_varname
     sns.set(font_scale=1.5)
     #     sns.set_context('paper', rc={"lines.linewidth": 1.2})
     sns.despine()
-    palette = ['#0d3d56', '#006887', '#0098b5', '#00cbde', '#00ffff']
+    palette = ["#0d3d56", "#006887", "#0098b5", "#00cbde", "#00ffff"]
 
     for X, X_name, ax_cur in zip(datasets, dataset_names, ax):
         T = X[T_varname].astype(float)
@@ -45,10 +47,10 @@ def plot_kmf_comparison(datasets, dataset_names, T_varname, E_varname, G_varname
         kmf = KaplanMeierFitter()
         unique_values = np.sort(X[G_varname].unique())
         for g, color in zip(unique_values, palette):
-            mask = (X[G_varname] == g)
+            mask = X[G_varname] == g
             kmf.fit(T[mask], event_observed=E[mask], label=g)
             ax_cur = kmf.plot(ax=ax_cur, color=color)
             ax_cur.legend(title=G_varname)
-            ax_cur.set_title('Survival Analysis C50 - {} Data'.format(X_name))
+            ax_cur.set_title("Survival Analysis C50 - {} Data".format(X_name))
             ax_cur.set_ylim(0, 1)
     plt.tight_layout()

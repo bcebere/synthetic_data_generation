@@ -24,11 +24,11 @@ class ContingencySynthesizer(BaseDPSynthesizer):
         self._check_init_args()
 
         ct_size = cardinality(data)
-        print('Estimated size contingency table: {}'.format(ct_size))
+        print("Estimated size contingency table: {}".format(ct_size))
 
         self.model_ = dp_contingency_table(data, self.epsilon)
         if self.verbose:
-            print('Contingency table fitted')
+            print("Contingency table fitted")
         return self
 
     def sample(self, n_records=None):
@@ -43,12 +43,13 @@ class ContingencySynthesizer(BaseDPSynthesizer):
         return sampled_records
 
 
-
-if __name__ == '__main__':
-    data_path = 'C:/projects/synthetic_data_generation/examples/data/original/adult_8c.csv'
+if __name__ == "__main__":
+    data_path = (
+        "C:/projects/synthetic_data_generation/examples/data/original/adult_8c.csv"
+    )
     df = pd.read_csv(data_path)
     epsilon = float(np.inf)
-    df_sub = df[['education', 'occupation', 'relationship']]
+    df_sub = df[["education", "occupation", "relationship"]]
 
     cs = ContingencySynthesizer(epsilon=epsilon)
     cs.fit(df_sub)
@@ -56,4 +57,3 @@ if __name__ == '__main__':
     df_cs.head()
 
     cs.score(df_sub, df_cs, score_dict=True)
-

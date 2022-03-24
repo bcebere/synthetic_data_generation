@@ -5,9 +5,9 @@ from synthesis.synthesizers.contingency import ContingencySynthesizer
 from synthesis.synthesizers.privbayes import PrivBayes, PrivBayesFix
 
 __all__ = [
-    'MarginalSynthesizer',
-    'UniformSynthesizer',
-    'ContingencySynthesizer',
-    'PrivBayes',
-    'PrivBayesFix'
+    "MarginalSynthesizer",
+    "UniformSynthesizer",
+    "ContingencySynthesizer",
+    "PrivBayes",
+    "PrivBayesFix",
 ]

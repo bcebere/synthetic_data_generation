@@ -5,8 +5,8 @@ from synthesis.transformers.sequence import GeneralizeDateSequence
 from synthesis.transformers.deidentification import *
 
 __all__ = [
-    'GeneralizeContinuous',
-    'GeneralizeCategorical',
-    'GeneralizeSchematic',
-    'GeneralizeDateSequence'
+    "GeneralizeContinuous",
+    "GeneralizeCategorical",
+    "GeneralizeSchematic",
+    "GeneralizeDateSequence",
 ]
